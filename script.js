@@ -4,11 +4,11 @@ const ADMIN_KEY = 'dylan-kartel-admin';
 const ADMIN_PASSWORD = 'dylankartel123';
 const DEFAULT_ARTWORK = 'https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=800&q=80';
 
+const pageType = document.body.dataset.page || 'public';
 const uploadForm = document.getElementById('uploadForm');
 const loginForm = document.getElementById('loginForm');
 const logoutButton = document.getElementById('logoutButton');
 const uploadFormContainer = document.getElementById('uploadFormContainer');
-const loginPanel = document.getElementById('loginForm');
 const adminStatus = document.getElementById('adminStatus');
 const uploadMessage = document.getElementById('uploadMessage');
 const playlistEl = document.getElementById('playlist');
@@ -64,18 +64,18 @@ function setAdminMode(value) {
 }
 
 function updateAdminUI() {
-  if (!adminStatus || !uploadFormContainer || !loginPanel || !uploadMessage) {
+  if (!adminStatus || !uploadFormContainer || !loginForm || !uploadMessage) {
     return;
   }
+
   const isAdmin = getAdminMode();
   adminStatus.classList.toggle('hidden', !isAdmin);
   uploadFormContainer.classList.toggle('hidden', !isAdmin);
-  loginPanel.classList.toggle('hidden', isAdmin);
-  if (isAdmin) {
-    uploadMessage.textContent = 'Welcome back, admin. Upload your latest song below.';
-  } else {
-    uploadMessage.textContent = 'Only Dylan can upload songs. Fans can scroll, play, and comment.';
-  }
+  loginForm.classList.toggle('hidden', isAdmin);
+
+  uploadMessage.textContent = isAdmin
+    ? 'Welcome back, admin. Upload your latest song below.'
+    : 'Only Dylan can upload songs. Fans can scroll, play, and comment.';
 }
 
 function createTrackCard(track) {
@@ -96,8 +96,8 @@ function createTrackCard(track) {
 
   const audio = document.createElement('audio');
   audio.controls = true;
-  audio.src = track.url;
   audio.preload = 'none';
+  audio.src = track.url || '';
 
   const commentsSection = document.createElement('div');
   commentsSection.className = 'comments-section';
@@ -128,6 +128,7 @@ function createTrackCard(track) {
 function renderComments(trackId) {
   const list = document.getElementById(`comments-${trackId}`);
   if (!list) return;
+
   const trackComments = comments[trackId] || [];
   list.innerHTML = '';
 
@@ -151,6 +152,8 @@ function renderComments(trackId) {
 }
 
 function renderPlaylist() {
+  if (!playlistEl) return;
+
   playlistEl.innerHTML = '';
 
   if (!tracks.length) {
@@ -188,39 +191,36 @@ if (uploadForm) {
     event.preventDefault();
 
     if (!getAdminMode()) {
-      alert('Only admin can upload songs. Please login first.');
+      alert('Only admin can upload songs. Please log in first.');
       return;
     }
 
     const titleInput = document.getElementById('songTitle');
     const artistInput = document.getElementById('songArtist');
     const fileInput = document.getElementById('songFile');
+    const imageInput = document.getElementById('songImage');
 
     const title = titleInput.value.trim();
     const artist = artistInput.value.trim();
     const file = fileInput.files[0];
+    const imageUrl = imageInput.value.trim() || DEFAULT_ARTWORK;
 
     if (!title || !artist || !file) {
       alert('Please complete every field and select an audio file.');
       return;
     }
 
-    const imageInput = document.getElementById('songImage');
-    const imageUrl = imageInput.value.trim() || DEFAULT_ARTWORK;
-    const dataUrl = await readFileAsDataURL(file);
     const track = {
       id: `track-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       title,
       artist,
-      url: dataUrl,
       imageUrl,
+      url: await readFileAsDataURL(file),
       uploadedAt: new Date().toISOString(),
     };
 
     await addTrack(track);
-
-    titleInput.value = '';
-    fileInput.value = '';
+    uploadForm.reset();
   });
 }
 
@@ -229,6 +229,7 @@ if (loginForm) {
     event.preventDefault();
     const passwordInput = document.getElementById('adminPassword');
     const password = passwordInput.value.trim();
+
     if (password === ADMIN_PASSWORD) {
       setAdminMode(true);
       passwordInput.value = '';
@@ -267,6 +268,7 @@ if (playlistEl) {
       text,
       createdAt: new Date().toISOString(),
     });
+
     saveComments();
     renderComments(trackId);
     form.reset();
