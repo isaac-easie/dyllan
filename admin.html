@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dylan Kartel Admin Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="admin">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div>
+        <p class="eyebrow">Admin Portal</p>
+        <h1>Dylan Kartel</h1>
+        <p class="tagline">Manage the artist portfolio, uploads, and official releases.</p>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero-card">
+      <div class="hero-content">
+        <p class="eyebrow">Admin Studio</p>
+        <h2>Dylan Kartel Creative Control</h2>
+        <p>Manage songs, artwork, and playlists from a refined admin studio built for the world’s best artist-level experience.</p>
+        <div class="hero-badges">
+          <span class="badge-pill">Secure Access</span>
+          <span class="badge-pill">Premium Uploads</span>
+          <span class="badge-pill">Playlist Curation</span>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img class="hero-image" src="assets/AAA_5597.jpg.jpeg" alt="Dylan Kartel performing" />
+      </div>
+    </section>
+
+    <section class="content-section admin-overview">
+      <div class="overview-grid">
+        <div class="stat-card">
+          <h3>Upload Status</h3>
+          <p>Secure admin-only controls for songs, cover art, and playlist placement.</p>
+        </div>
+        <div class="stat-card">
+          <h3>Audience Ready</h3>
+          <p>Every release is staged cleanly for fans with premium artwork previews and track details.</p>
+        </div>
+        <div class="stat-card">
+          <h3>Studio Focus</h3>
+          <p>Keep the admin workflow separate, elegant, and fast — designed for artist-first creativity.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section music-section">
+      <div class="music-panel">
+        <div class="upload-card">
+          <h3>Admin Login</h3>
+          <p id="uploadMessage">Please log in to upload new work or manage the portfolio.</p>
+
+          <form id="loginForm" class="admin-form">
+            <label>
+              Admin password
+              <input type="password" id="adminPassword" placeholder="Enter admin password" required />
+            </label>
+            <button type="submit">Login as Admin</button>
+          </form>
+
+          <div id="adminStatus" class="admin-status hidden">
+            <p>Logged in as admin. Upload your latest track or artwork details below.</p>
+            <button id="logoutButton" type="button">Logout</button>
+          </div>
+
+          <div id="uploadFormContainer" class="hidden">
+            <form id="uploadForm">
+              <label>
+                Project title
+                <input type="text" id="songTitle" placeholder="Enter track or artwork title" required />
+              </label>
+              <label>
+                Artist
+                <input type="text" id="songArtist" value="Dylan Kartel" required />
+              </label>
+              <label>
+                Cover image URL (optional)
+                <input type="url" id="songImage" placeholder="https://example.com/artwork.jpg" />
+              </label>
+              <label>
+                Audio file
+                <input type="file" id="songFile" accept="audio/*" required />
+              </label>
+              <button type="submit">Upload Work</button>
+            </form>
+            <p class="hint">Note: This demo stores uploaded tracks in your browser. Refresh will preserve entries if supported.</p>
+          </div>
+        </div>
+
+        <div class="playlist-card">
+          <h3>Portfolio Preview</h3>
+          <div id="playlist" class="playlist">
+            <p class="empty-state">No songs yet. Upload a project to populate the portfolio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="content-section contact-section">
+      <h2>Contact & Follow</h2>
+      <div class="contact-grid">
+        <div>
+          <h3>Business & Booking</h3>
+          <p><a href="mailto:dylankartel2@gmail.com">dylankartel2@gmail.com</a></p>
+        </div>
+        <div>
+          <h3>Follow</h3>
+          <p>@Dylankartel</p>
+        </div>
+        <div>
+          <h3>Copyright</h3>
+          <p>© Dylan Kartel. All rights reserved. Unauthorized use, distribution, or re-upload of this content is strictly prohibited.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Admin uploads are private and separated from the fan page experience.</p>
+    <p class="dev-note">Built and maintained by Dylan Kartel’s web developer.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
